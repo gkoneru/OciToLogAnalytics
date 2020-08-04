@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# In[50]:
-
 
 import json
 import requests
@@ -13,12 +9,9 @@ import base64
 import oci
 
 
-# In[52]:
-
-
 # Set up OCI config
 config = oci.config.from_file(
-     "/Users/vg/Downloads/config",
+     "~/.oci/config",
      "DEFAULT")
 # Create a service client
 identity = oci.identity.IdentityClient(config)
@@ -119,7 +112,7 @@ def post_data(customer_id, shared_key, body, log_type):
 
 #  Setting configuration
 #  Default path for configuration file is "~/.oci/config"
-config = oci.config.from_file("/Users/vg/Downloads/config")
+config = oci.config.from_file("~/.oci/config")
 tenancy_id = config["tenancy"]
 
 #  Initiate the client with the locally available config.
@@ -148,8 +141,8 @@ customer_id = 'xxxxxxxxxxxxxxxx'
 # For the shared key, use either the primary or the secondary Connected Sources client authentication key   
 shared_key = "xxxxxxxxxxxxxxxxxx"
 
-log_type = 'OCIAuditgk'
-
+#Log Analytics custom log table name
+log_type = 'OCIAudit'
 
 
 #  For each region get the logs for each compartment.
@@ -164,7 +157,7 @@ for r in regions:
         start_time,
         end_time)
 
-# Push results to loganalytics. 
+# Push results to azure log analytics. 
 
 for event in audit_events:
     jsondoc = json.loads(str(event))
